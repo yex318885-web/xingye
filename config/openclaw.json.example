@@ -1,0 +1,125 @@
+{
+  "plugins": {
+    "entries": {
+      "openclaw-weixin": { "enabled": true },
+      "deepseek": { "enabled": true },
+      "feishu": { "enabled": true },
+      "microsoft": { "enabled": true },
+      "zai": { "enabled": true },
+      "volcengine": { "enabled": false },
+      "qwen": { "enabled": false }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "YOUR_GATEWAY_TOKEN"
+    },
+    "port": 18789,
+    "bind": "loopback",
+    "tailscale": { "mode": "off" }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "C:\\Users\\<YOU>\\.openclaw\\workspace",
+      "models": {
+        "deepseek/deepseek-v4-pro": { "alias": "DeepSeek" }
+      },
+      "model": { "primary": "deepseek/deepseek-v4-pro" }
+    },
+    "entries": {
+      "main": {
+        "name": "main",
+        "identity": {
+          "name": "小鸟游星野",
+          "emoji": "🐟",
+          "theme": "慢悠悠、爱钓鱼，对你黏人又护短，关键时刻最靠得住"
+        },
+        "heartbeat": {
+          "every": "3h",
+          "target": "last",
+          "activeHours": { "start": "09:00", "end": "23:00" }
+        }
+      }
+    }
+  },
+  "tools": {
+    "profile": "full",
+    "media": {
+      "audio": { "enabled": true },
+      "models": [
+        {
+          "type": "cli",
+          "command": "D:\\Python312\\python.exe",
+          "args": ["C:\\Users\\<YOU>\\.openclaw\\workspace\\tools\\whisper-transcribe.py", "{{AttachmentPath}}"],
+          "timeoutSeconds": 300,
+          "capabilities": ["audio"]
+        },
+        { "provider": "zai", "model": "glm-5v-turbo", "capabilities": ["image"] }
+      ]
+    }
+  },
+  "auth": {
+    "profiles": {
+      "deepseek:default": { "provider": "deepseek", "mode": "api_key" }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "deepseek": {
+        "baseUrl": "https://api.deepseek.com",
+        "api": "openai-completions",
+        "models": []
+      },
+      "zai": {
+        "baseUrl": "https://open.bigmodel.cn/api/paas/v4",
+        "api": "openai-completions",
+        "apiKey": "YOUR_ZAI_API_KEY"
+      },
+      "ollama": {
+        "baseUrl": "http://127.0.0.1:11434",
+        "api": "ollama",
+        "timeoutSeconds": 300,
+        "models": [
+          { "id": "qwen3:8b", "name": "qwen3:8b", "reasoning": true, "input": ["text"] },
+          { "id": "deepseek-r1:8b", "name": "deepseek-r1:8b", "reasoning": true, "input": ["text"] }
+        ]
+      }
+    }
+  },
+  "channels": {
+    "openclaw-weixin": { "tts": { "auto": "off" } },
+    "feishu": {
+      "appId": "YOUR_FEISHU_APP_ID",
+      "appSecret": "YOUR_FEISHU_APP_SECRET",
+      "renderMode": "raw",
+      "streaming": { "mode": "off" },
+      "typingIndicator": false,
+      "tts": { "auto": "always" }
+    }
+  },
+  "tts": {
+    "provider": "microsoft",
+    "auto": "inbound",
+    "providers": {
+      "microsoft": {
+        "speakerVoice": "zh-CN-XiaoxiaoNeural",
+        "lang": "zh-CN",
+        "rate": "-5%",
+        "pitch": "-3%"
+      }
+    }
+  },
+  "memory": {
+    "search": {
+      "provider": "openai-compatible",
+      "remote": {
+        "baseUrl": "https://open.bigmodel.cn/api/paas/v4",
+        "apiKey": "YOUR_ZAI_API_KEY"
+      },
+      "model": "embedding-3"
+    }
+  }
+}

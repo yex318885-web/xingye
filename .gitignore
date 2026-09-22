@@ -1,0 +1,21 @@
+# 忽略真实配置与凭据
+openclaw.json
+*.bak
+*.bak.*
+*last-good*
+
+# 忽略账号令牌与凭证
+accounts.json
+accounts/
+backup-*/
+
+# 日志与状态
+logs/
+state/
+cache/
+tmp/
+*.log
+
+# 系统
+Thumbs.db
+.DS_Store
